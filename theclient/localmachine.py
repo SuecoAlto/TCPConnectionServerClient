@@ -2,6 +2,7 @@ import socket
 import struct
 from enum import Enum
 
+
 class MessageType(Enum):
     TURN_ON_GREEN = 1
     TURN_ON_BLUE = 2
@@ -11,7 +12,8 @@ class MessageType(Enum):
     QUERY_STATUS = 6
     ACKNOWLEDGE = 7
     ERROR = 8
-    
+
+
 def create_package(action_type, data=''):
     """
     Creates a package by encoding the action type and data.
@@ -75,3 +77,36 @@ def get_user_command():
     print("6: Query status")  
     print("Enter 'quit' to exit.")
     return input("Enter your choice: ")
+
+
+def main():
+    server_ip = '192.168.0.11'
+    server_port = 2222
+
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client_socket.connect((server_ip, server_port))
+    try: 
+        while True:
+            choice = get_user_command()
+            if choice == 'quit':
+                break
+            if choice.isdigit():
+                choice_num = int(choice)
+                action_type = MessageType(choice_num)
+                print(f"This is the action_type based on choise num-->{action_type}")
+                if action_type == MessageType.ACTUATE_SERVO:
+                    servo_position = input("Enter servo position (0-180): ")
+                    package = create_package(action_type, servo_position)
+                else:
+                    package = create_package(action_type)
+                client_socket.sendall(package)
+                response = client_socket.recv(1024)
+                handle_response(response)
+        else:
+            print("Invalid Input.")
+    finally
+        client_socket.close()
+
+
+if __name__ == '__main__':
+    main()
