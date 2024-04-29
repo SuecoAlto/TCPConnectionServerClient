@@ -51,7 +51,7 @@ def handle_response(response):
         response_type = MessageType(response_type_validation)
     except ValueError:
         return
-ata = response[3:3 + data_lenght].decode('utf-8')
+data = response[3:3 + data_lenght].decode('utf-8')
 print(f"This is the data from response------>{data}")
 
 if response_type == MessageType.ACKNOWLEDGE:
@@ -59,3 +59,19 @@ if response_type == MessageType.ACKNOWLEDGE:
 elif response_type == MessageType.ERROR:
     print(f"Error from server: {data}")
 
+
+def get_user_command():
+    """
+    Displays a menu of options for the user and prompts for their choice.
+
+    Returns:
+        str: The user's choice as a string.
+    """
+    print("1: Turn on green light")
+    print("2: Turn on blue light")
+    print("3: Turn off green light")
+    print("4: Turn off blue light")
+    print("5: Actuate servo motor (requires additional input)")
+    print("6: Query status")  
+    print("Enter 'quit' to exit.")
+    return input("Enter your choice: ")
