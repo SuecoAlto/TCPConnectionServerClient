@@ -60,11 +60,11 @@ void handelLEDCommand(String action) {
 int pin;                             // Declare a variable to store the pin number associated with the LED.
 if (action.startsWith("green")) {     
   pin = LED_GREEN;                   // Assign the pin number for the green LED.
-  prtcolor = print(f"GREEN")
+  color = "GREEN";
   }
 else if (action.startsWith("blue")) {
   pin = LED_BLUE;                    // Assign the pin number for the blue LED.
-  prtcolor = print(f"BLUE")
+  color = "BLUE";
   }
 else {
   Serial.println("ERROR: Unknown LED color specified.");
@@ -73,11 +73,11 @@ return;
 // Perform the action specified for the LED.
   if (action.endsWith("on")) {
     digitalWrite(pin, HIGH);
-    Serial.println({prtcolor} + "LED ON");
+    Serial.print(color + "LED ON\n");
   } 
   else if (action.endsWith("off")) {
     digitalWrite(pin, LOW);
-    Serial.println({prtcolor} + "LED OFF")
+    Serial.print(color + "LED OFF\n");
   }
   else {
     Serial.println("ERROR: Unknown action specified for LED.");
